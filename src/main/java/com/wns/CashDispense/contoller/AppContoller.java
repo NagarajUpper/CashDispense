@@ -1,6 +1,7 @@
 package com.wns.CashDispense.contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +32,7 @@ public class AppContoller {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/cashProcess/{amount}")
-	public String getNoteCount(@RequestParam("amount") int amount) {
+	public String getNoteCount(@PathVariable("amount") int amount) {
 		
 		cashService.getNoteCounts(amount);
 		

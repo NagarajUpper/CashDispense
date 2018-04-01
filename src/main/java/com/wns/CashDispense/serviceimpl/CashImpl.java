@@ -1,7 +1,7 @@
 package com.wns.CashDispense.serviceimpl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,27 +32,77 @@ public class CashImpl implements CashService {
 	public String getNoteCounts(int amount) {
 		CashModel result = cashDao.getCounts();
 
-		cashProcess(result, amount);
+		Integer[] integers = cashProcess(result, amount);
+
+		CashModel cm = new CashModel();
+
+		cm.setId("1");
+		cm.setDenominationFifty(50);
+		cm.setDenominationFiftyCount(result.getDenominationFiftyCount() - integers[1]);
+		cm.setDenominationTwenty(20);
+		cm.setDenominationTwentyCount(result.getDenominationTwentyCount() - integers[0]);
+
+		cashDao.addNotes(cm);
 
 		return null;
 	}
 
-	private void cashProcess(CashModel result, int amount) {
+	private Integer[] cashProcess(CashModel result, int amount) {
 
-		int totalAmount = calculateTotalCash(result);
-		
-		if(amount<=totalAmount) {
-			
-			
+		int[] values = { result.getDenominationTwenty(), result.getDenominationFifty() };
+		int[] ammounts = { result.getDenominationTwentyCount(), result.getDenominationFiftyCount() };
+		List<Integer[]> results = solutions(values, ammounts, new int[2], amount, 0);
+
+		if (results.size() == 1) {
+
+			return results.get(0);
+
+		} else {
+
+			for (Integer[] rs : results) {
+
+			}
+
 		}
+
+		return null;
 
 	}
 
-	private int calculateTotalCash(CashModel result) {
-		int twentyCount = result.getDenominationTwenty() * result.getDenominationTwentyCount();
-		int fiftyCount = result.getDenominationFifty() * result.getDenominationFiftyCount();
+	public List<Integer[]> solutions(int[] values, int[] ammounts, int[] variation, int price, int position) {
+		List<Integer[]> list = new ArrayList<>();
+		int value = compute(values, variation);
+		if (value < price) {
+			for (int i = position; i < values.length; i++) {
+				if (ammounts[i] > variation[i]) {
+					int[] newvariation = variation.clone();
+					newvariation[i]++;
+					List<Integer[]> newList = solutions(values, ammounts, newvariation, price, i);
+					if (newList != null) {
+						list.addAll(newList);
+					}
+				}
+			}
+		} else if (value == price) {
+			list.add(myCopy(variation));
+		}
+		return list;
+	}
 
-		return (twentyCount + fiftyCount);
+	private int compute(int[] values, int[] variation) {
+		int ret = 0;
+		for (int i = 0; i < variation.length; i++) {
+			ret += values[i] * variation[i];
+		}
+		return ret;
+	}
+
+	private Integer[] myCopy(int[] ar) {
+		Integer[] ret = new Integer[ar.length];
+		for (int i = 0; i < ar.length; i++) {
+			ret[i] = ar[i];
+		}
+		return ret;
 	}
 
 }

@@ -9,5 +9,6 @@ public interface CashDao {
 	void addNotes(CashModel cashMadel);
 	
 	CashModel getCounts();
+	
 
 }
