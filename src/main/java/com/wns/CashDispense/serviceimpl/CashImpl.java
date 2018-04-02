@@ -44,8 +44,8 @@ public class CashImpl implements CashService {
 
 		cashDao.addNotes(cm);
 
-		return null;
-	}
+		return "Fifty Notes:  " + integers[1] + " TwentyNotes:"+ integers[0] + " =  $" ;
+		}
 
 	private Integer[] cashProcess(CashModel result, int amount) {
 
@@ -57,15 +57,8 @@ public class CashImpl implements CashService {
 
 			return results.get(0);
 
-		} else {
-
-			for (Integer[] rs : results) {
-
-			}
-
-		}
-
-		return null;
+		} 
+			return results.get(results.size()-1);
 
 	}
 

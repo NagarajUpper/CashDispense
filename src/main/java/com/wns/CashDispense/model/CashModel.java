@@ -3,10 +3,12 @@ package com.wns.CashDispense.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Entity
 public class CashModel {
 	@Id
-	private String id;
+	private String id="1";
 	
 	private int denominationTwenty;
 	private int denominationTwentyCount;
@@ -43,9 +45,7 @@ public class CashModel {
 		this.denominationFiftyCount = denominationFiftyCount;
 	}
 	
-	public String getId() {
-		return id;
-	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}

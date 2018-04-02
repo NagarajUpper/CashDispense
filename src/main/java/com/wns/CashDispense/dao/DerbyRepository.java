@@ -8,5 +8,4 @@ import com.wns.CashDispense.model.CashModel;
 
 @Repository
 public interface DerbyRepository extends CrudRepository<CashModel,String> {
-
 }
